@@ -1,0 +1,26 @@
+--- !ruby/object:Squash::Javascript::SourceMap
+mappings:
+- !ruby/object:Squash::Javascript::SourceMap::Mapping
+  route: /example/file.js
+  compiled_line: 0
+  compiled_column: 0
+  source_file: vendor/assets/foo.js
+  source_line: 16
+  source_column: 1
+  symbol: src
+- !ruby/object:Squash::Javascript::SourceMap::Mapping
+  route: /example/file.js
+  compiled_line: 0
+  compiled_column: 9
+  source_file: vendor/assets/foo.js
+  source_line: 16
+  source_column: 9
+  symbol: src
+- !ruby/object:Squash::Javascript::SourceMap::Mapping
+  route: /example/file.js
+  compiled_line: 0
+  compiled_column: 10
+  source_file: vendor/assets/foo.js
+  source_line: 16
+  source_column: 11
+  symbol: src

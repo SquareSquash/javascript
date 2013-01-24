@@ -55,7 +55,7 @@ For Rails applications, add the Squash client engine to your Gemfile with
 JavaScript into your application.js file (or other JavaScript manifest):
 
 ```` javascript
-//= require squash/javascript
+//= require squash_javascript
 ````
 
 ### Other projects

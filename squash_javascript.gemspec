@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "squash_javascript"
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tim Morgan"]
-  s.date = "2012-11-15"
+  s.date = "2013-01-25"
   s.description = "This client library records exceptions in front-end JavaScript code to Squash."
   s.email = "tim@squareup.com"
   s.executables = ["upload_source_map"]

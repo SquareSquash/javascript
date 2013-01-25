@@ -198,8 +198,8 @@ class _SquashJavascript
     for line in stack
       context = line.context
       context = null if context && any(context, (cline) -> cline.length > 200)
-      backtraces.push ['_JS_ASSET_', line.url, line.line, line.column, line.func, context]
-    return [ ["Active Thread", true, backtraces] ]
+      backtraces.push {url: line.url, line: line.line, column: line.column, symbol: line.func, context: context}
+    return [ {name: "Active Thread", faulted: true, backtrace: backtraces} ]
 
   ISODateString = (d) ->
     pad = (n) -> if n < 10 then '0' + n else n

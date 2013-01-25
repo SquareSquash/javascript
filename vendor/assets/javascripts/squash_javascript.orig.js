@@ -204,9 +204,21 @@
         })) {
           context = null;
         }
-        backtraces.push(['_JS_ASSET_', line.url, line.line, line.column, line.func, context]);
+        backtraces.push({
+          url: line.url,
+          line: line.line,
+          column: line.column,
+          symbol: line.func,
+          context: context
+        });
       }
-      return [["Active Thread", true, backtraces]];
+      return [
+        {
+          name: "Active Thread",
+          faulted: true,
+          backtrace: backtraces
+        }
+      ];
     };
 
     ISODateString = function(d) {

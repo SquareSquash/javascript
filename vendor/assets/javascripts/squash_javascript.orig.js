@@ -209,7 +209,8 @@
           line: line.line,
           column: line.column,
           symbol: line.func,
-          context: context
+          context: context,
+          type: 'minified'
         });
       }
       return [

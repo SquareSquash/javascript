@@ -29,7 +29,7 @@ class root.SquashJavascript
 class _SquashJavascript
   # @private
   constructor: ->
-    TraceKit.report.subscribe (error) -> SquashJavascript.instance().report(error)
+    TraceKit.report.subscribe (info, error) -> SquashJavascript.instance().report(info, error)
 
   # Sets configuration options. See the README file for a list of accepted
   # configuration options. Multiple calls will merge new options in.
@@ -55,15 +55,17 @@ class _SquashJavascript
   # installs a listener that notifies the server for thrown exceptions.
   #
   # @param [Error] error The error to record.
+  # @param [Object] user_data Additional user data to send up with the error.
   #
-  notify: (error) ->
+  notify: (error, user_data) ->
     if error instanceof Error
+      error._squash_user_data = user_data
       TraceKit.report(error)
     else
       throw error
 
   # @private
-  report: (error) ->
+  report: (info, error) ->
     try
       return false if @options?.disabled
       if !@options?.APIKey || !@options?.environment ||
@@ -71,28 +73,28 @@ class _SquashJavascript
         console.error "Missing required Squash configuration keys"
         return false
 
-      return false if this.shouldIgnoreError(error)
-      return false unless error.stack
+      return false if this.shouldIgnoreError(info)
+      return false unless info.stack
 
-      fields = arguments[1] || new Object()
+      fields = new Object()
       fields.api_key = @options.APIKey
       fields.environment = @options.environment
       fields.client = "javascript"
       fields.revision = @options.revision
 
-      fields.class_name = error.type || error.name
+      fields.class_name = info.type ? info.name
       # errors that make it up to window.onerror get stupidly rewritten: their
       # class is set to "Error" and the ACTUAL class is integrated into the
       # message (e.g., "Uncaught TypeError: [message]")
-      if !error.name && (matches = error.message.match(/^(Uncaught )?(\w+): (.+)/))
+      if !info.name && (matches = info.message.match(/^(Uncaught )?(\w+): (.+)/))
         fields.class_name = matches[2]
         fields.message = matches[3]
       else
-        fields.message = error.message
+        fields.message = info.message
       fields.class_name ?= 'Error' # when all else fails
 
-      fields.backtraces = buildBacktrace(error.stack)
-      fields.capture_method = error.mode
+      fields.backtraces = buildBacktrace(info.stack)
+      fields.capture_method = info.mode
       fields.occurred_at = ISODateString(new Date())
 
       fields.schema = window.location.protocol.replace(/:$/, '')
@@ -110,6 +112,8 @@ class _SquashJavascript
       fields.window_height = window.innerHeight
       fields.color_depth = screen.colorDepth
 
+      (fields[k] = v for own k, v of error._squash_user_data)
+
       body = JSON.stringify(fields)
       this.HTTPTransmit (@options.APIHost + @options.notifyPath),
           [ ['Content-Type', 'application/json'] ],
@@ -118,7 +122,7 @@ class _SquashJavascript
       return true
     catch internal_error
       console.error "Error while trying to notify Squash:", internal_error.stack
-      console.error "-- original error:", error
+      console.error "-- original error:", info
 
   # Runs the given `block`. If an exception is thrown within the function, adds
   # the given user data to the exception and re-throws it.

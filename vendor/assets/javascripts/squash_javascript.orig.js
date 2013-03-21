@@ -25,8 +25,8 @@
     var ISODateString, any, buildBacktrace, mergeBang;
 
     function _SquashJavascript() {
-      TraceKit.report.subscribe(function(error) {
-        return SquashJavascript.instance().report(error);
+      TraceKit.report.subscribe(function(info, error) {
+        return SquashJavascript.instance().report(info, error);
       });
     }
 
@@ -48,16 +48,17 @@
       return _results;
     };
 
-    _SquashJavascript.prototype.notify = function(error) {
+    _SquashJavascript.prototype.notify = function(error, user_data) {
       if (error instanceof Error) {
+        error._squash_user_data = user_data;
         return TraceKit.report(error);
       } else {
         throw error;
       }
     };
 
-    _SquashJavascript.prototype.report = function(error) {
-      var body, fields, matches, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    _SquashJavascript.prototype.report = function(info, error) {
+      var body, fields, k, matches, v, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
       try {
         if ((_ref = this.options) != null ? _ref.disabled : void 0) {
           return false;
@@ -66,29 +67,29 @@
           console.error("Missing required Squash configuration keys");
           return false;
         }
-        if (this.shouldIgnoreError(error)) {
+        if (this.shouldIgnoreError(info)) {
           return false;
         }
-        if (!error.stack) {
+        if (!info.stack) {
           return false;
         }
-        fields = arguments[1] || new Object();
+        fields = new Object();
         fields.api_key = this.options.APIKey;
         fields.environment = this.options.environment;
         fields.client = "javascript";
         fields.revision = this.options.revision;
-        fields.class_name = error.type || error.name;
-        if (!error.name && (matches = error.message.match(/^(Uncaught )?(\w+): (.+)/))) {
+        fields.class_name = (_ref5 = info.type) != null ? _ref5 : info.name;
+        if (!info.name && (matches = info.message.match(/^(Uncaught )?(\w+): (.+)/))) {
           fields.class_name = matches[2];
           fields.message = matches[3];
         } else {
-          fields.message = error.message;
+          fields.message = info.message;
         }
-        if ((_ref5 = fields.class_name) == null) {
+        if ((_ref6 = fields.class_name) == null) {
           fields.class_name = 'Error';
         }
-        fields.backtraces = buildBacktrace(error.stack);
-        fields.capture_method = error.mode;
+        fields.backtraces = buildBacktrace(info.stack);
+        fields.capture_method = info.mode;
         fields.occurred_at = ISODateString(new Date());
         fields.schema = window.location.protocol.replace(/:$/, '');
         fields.host = window.location.hostname;
@@ -106,12 +107,18 @@
         fields.window_width = window.innerWidth;
         fields.window_height = window.innerHeight;
         fields.color_depth = screen.colorDepth;
+        _ref7 = error._squash_user_data;
+        for (k in _ref7) {
+          if (!__hasProp.call(_ref7, k)) continue;
+          v = _ref7[k];
+          fields[k] = v;
+        }
         body = JSON.stringify(fields);
         this.HTTPTransmit(this.options.APIHost + this.options.notifyPath, [['Content-Type', 'application/json']], body);
         return true;
       } catch (internal_error) {
         console.error("Error while trying to notify Squash:", internal_error.stack);
-        return console.error("-- original error:", error);
+        return console.error("-- original error:", info);
       }
     };
 

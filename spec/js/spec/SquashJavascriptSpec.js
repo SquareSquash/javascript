@@ -91,14 +91,41 @@ describe("SquashJavascript", function() {
       });
     });
 
+    describe("[user data]", function() {
+      beforeEach(function() {
+        SquashJavascript.instance().configure({
+                                                APIKey:      'abc-123',
+                                                environment: 'development',
+                                                revision:    'abc123',
+                                                APIHost:     'http://test.host'
+                                              });
+      });
+
+      it("should send up user data associated with the exception", function() {
+        var spy = spyOn(SquashJavascript.instance(), 'HTTPTransmit');
+        expect(function() { SquashJavascript.instance().notify(makeError(), {foo: 'bar'}); }).toThrow();
+        jasmine.Clock.tick(2001);
+        expect(SquashJavascript.instance().HTTPTransmit).toHaveBeenCalled();
+        expect(JSON.parse(spy.mostRecentCall.args[2]).foo).toBe("bar");
+      });
+
+      it("should allow user data to override other fields", function() {
+        var spy = spyOn(SquashJavascript.instance(), 'HTTPTransmit');
+        expect(function() { SquashJavascript.instance().notify(makeError(), {screen_width: 12345}); }).toThrow();
+        jasmine.Clock.tick(2001);
+        expect(SquashJavascript.instance().HTTPTransmit).toHaveBeenCalled();
+        expect(JSON.parse(spy.mostRecentCall.args[2]).screen_width).toBe(12345);
+      });
+    });
+
     describe("[ignored errors]", function() {
       beforeEach(function() {
         SquashJavascript.instance().configure({
-                                            APIKey: 'abc-123',
-                                            environment: 'development',
-                                            revision: 'abc123',
-                                            APIHost: 'http://test.host'
-                                          });
+                                                APIKey:      'abc-123',
+                                                environment: 'development',
+                                                revision:    'abc123',
+                                                APIHost:     'http://test.host'
+                                              });
       });
 
       it("should not notify for objects other than Errors", function() {
@@ -145,12 +172,12 @@ describe("SquashJavascript", function() {
     describe("[XHR]", function() {
       beforeEach(function() {
         SquashJavascript.instance().configure({
-                                            APIKey: 'abc-123',
-                                            environment: 'development',
-                                            revision: 'abc123',
-                                            APIHost: 'http://test.host',
-                                            notifyPath: '/notify'
-                                          });
+                                                APIKey:      'abc-123',
+                                                environment: 'development',
+                                                revision:    'abc123',
+                                                APIHost:     'http://test.host',
+                                                notifyPath:  '/notify'
+                                              });
       });
 
       it("should use the correct URL and method", function() {
@@ -197,11 +224,11 @@ describe("SquashJavascript", function() {
   describe("#addUserData", function() {
     beforeEach(function() {
       SquashJavascript.instance().configure({
-                                          APIKey: 'abc-123',
-                                          environment: 'development',
-                                          revision: 'abc123',
-                                          APIHost: 'http://test.host'
-                                        });
+                                              APIKey:      'abc-123',
+                                              environment: 'development',
+                                              revision:    'abc123',
+                                              APIHost:     'http://test.host'
+                                            });
     });
 
     it("should add user data to a raised error, and re-raise it", function() {
@@ -236,11 +263,11 @@ describe("SquashJavascript", function() {
   describe("#addingUserData", function() {
     beforeEach(function() {
       SquashJavascript.instance().configure({
-                                          APIKey: 'abc-123',
-                                          environment: 'development',
-                                          revision: 'abc123',
-                                          APIHost: 'http://test.host'
-                                        });
+                                              APIKey:      'abc-123',
+                                              environment: 'development',
+                                              revision:    'abc123',
+                                              APIHost:     'http://test.host'
+                                            });
     });
 
     it("should return a function that calls #addUserData", function() {
@@ -263,11 +290,11 @@ describe("SquashJavascript", function() {
   describe("#ignoreExceptions", function() {
     beforeEach(function() {
       SquashJavascript.instance().configure({
-                                          APIKey: 'abc-123',
-                                          environment: 'development',
-                                          revision: 'abc123',
-                                          APIHost: 'http://test.host'
-                                        });
+                                              APIKey:      'abc-123',
+                                              environment: 'development',
+                                              revision:    'abc123',
+                                              APIHost:     'http://test.host'
+                                            });
     });
 
     it("should ignore given exception classes", function() {
@@ -326,11 +353,11 @@ describe("SquashJavascript", function() {
   describe("#ignoringExceptions", function() {
     beforeEach(function() {
       SquashJavascript.instance().configure({
-                                          APIKey: 'abc-123',
-                                          environment: 'development',
-                                          revision: 'abc123',
-                                          APIHost: 'http://test.host'
-                                        });
+                                              APIKey:      'abc-123',
+                                              environment: 'development',
+                                              revision:    'abc123',
+                                              APIHost:     'http://test.host'
+                                            });
     });
 
     it("should return a function that ignores given exception classes", function() {

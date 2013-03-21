@@ -74,13 +74,14 @@ TraceKit.report = (function () {
 	/**
 	 * Dispatch stack information to all handlers.
 	 * @param {Object.<string, *>} stack
+   * @param {Error} e
 	 */
-	function notifyHandlers(stack) {
+	function notifyHandlers(stack, e) {
 		var exception = null;
 		for (var i in handlers) {
 			if (handlers.hasOwnProperty(i)) {
 				try {
-					handlers[i](stack);
+					handlers[i](stack, e);
 				}
 				catch (inner) {
 					exception = inner;
@@ -119,7 +120,7 @@ TraceKit.report = (function () {
 			stack = { 'mode': 'onerror', 'message': message, 'stack': [ location ] };
 		}
 
-		notifyHandlers(stack);
+		notifyHandlers(stack, null);
 
 		if (_oldOnerrorHandler) {
 			return _oldOnerrorHandler.apply(this, arguments);
@@ -141,7 +142,7 @@ TraceKit.report = (function () {
 				var s = lastExceptionStack;
 				lastExceptionStack = null;
 				lastException = null;
-				notifyHandlers(s);
+				notifyHandlers(s, ex);
 			}
 		}
 
@@ -157,7 +158,7 @@ TraceKit.report = (function () {
 			if (lastException === ex) {
 				lastExceptionStack = null;
 				lastException = null;
-				notifyHandlers(stack);
+				notifyHandlers(stack, ex);
 			}
 		}, (stack.incomplete ? 2000 : 0));
 

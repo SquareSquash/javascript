@@ -112,7 +112,8 @@ class _SquashJavascript
       fields.window_height = window.innerHeight
       fields.color_depth = screen.colorDepth
 
-      (fields[k] = v for own k, v of error._squash_user_data)
+      if error
+        (fields[k] = v for own k, v of error._squash_user_data)
 
       body = JSON.stringify(fields)
       this.HTTPTransmit (@options.APIHost + @options.notifyPath),

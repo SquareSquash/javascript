@@ -107,11 +107,13 @@
         fields.window_width = window.innerWidth;
         fields.window_height = window.innerHeight;
         fields.color_depth = screen.colorDepth;
-        _ref7 = error._squash_user_data;
-        for (k in _ref7) {
-          if (!__hasProp.call(_ref7, k)) continue;
-          v = _ref7[k];
-          fields[k] = v;
+        if (error) {
+          _ref7 = error._squash_user_data;
+          for (k in _ref7) {
+            if (!__hasProp.call(_ref7, k)) continue;
+            v = _ref7[k];
+            fields[k] = v;
+          }
         }
         body = JSON.stringify(fields);
         this.HTTPTransmit(this.options.APIHost + this.options.notifyPath, [['Content-Type', 'application/json']], body);

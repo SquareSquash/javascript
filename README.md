@@ -22,7 +22,7 @@ install with `rake setup`.
 
 ### Ruby library
 
-Markdown-formatted YARD documentation is available by running 'rake doc:ruby`.
+Markdown-formatted YARD documentation is available by running `rake doc:ruby`.
 The documentation is written to the `doc/ruby` directory.
 
 Compatibility

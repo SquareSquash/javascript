@@ -178,8 +178,8 @@ class _SquashJavascript
   # @private
   HTTPTransmit: (url, headers, body) ->
     request = new XMLHttpRequest()
-    request.timeout = @options.transmitTimeout
     request.open "POST", url, true
+    request.timeout = @options.transmitTimeout
     for header in headers
       request.setRequestHeader header[0], header[1]
     request.send body

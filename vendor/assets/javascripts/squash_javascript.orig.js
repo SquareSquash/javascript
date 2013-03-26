@@ -173,8 +173,8 @@
     _SquashJavascript.prototype.HTTPTransmit = function(url, headers, body) {
       var header, request, _i, _len;
       request = new XMLHttpRequest();
-      request.timeout = this.options.transmitTimeout;
       request.open("POST", url, true);
+      request.timeout = this.options.transmitTimeout;
       for (_i = 0, _len = headers.length; _i < _len; _i++) {
         header = headers[_i];
         request.setRequestHeader(header[0], header[1]);

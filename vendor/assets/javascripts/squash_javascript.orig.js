@@ -209,7 +209,7 @@
         line = stack[_i];
         context = line.context;
         if (context && any(context, function(cline) {
-          return cline.length > 200;
+          return cline && cline.length > 200;
         })) {
           context = null;
         }

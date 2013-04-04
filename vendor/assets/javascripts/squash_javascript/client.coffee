@@ -202,7 +202,7 @@ class _SquashJavascript
     backtraces = []
     for line in stack
       context = line.context
-      context = null if context && any(context, (cline) -> cline.length > 200)
+      context = null if context && any(context, (cline) -> cline && cline.length > 200)
       backtraces.push {url: line.url, line: line.line, column: line.column, symbol: line.func, context: context, type: 'minified'}
     return [ {name: "Active Thread", faulted: true, backtrace: backtraces} ]
 

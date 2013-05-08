@@ -43,6 +43,7 @@ class _SquashJavascript
         transmitTimeout: 15000
         ignoredExceptionClasses: []
         ignoredExceptionMessages: {}
+        globalUserData: {}
     }
     for own key, value of options
       @options[key] = value
@@ -81,6 +82,9 @@ class _SquashJavascript
       fields.environment = @options.environment
       fields.client = "javascript"
       fields.revision = @options.revision
+
+      for own key, value of @options.globalUserData
+        fields[key] = value
 
       fields.class_name = info.type ? info.name
       # errors that make it up to window.onerror get stupidly rewritten: their

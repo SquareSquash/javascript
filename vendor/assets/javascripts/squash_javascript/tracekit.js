@@ -106,10 +106,12 @@ TraceKit.report = (function () {
 	 */
 	window.onerror = function (message, url, lineNo) {
 		var stack = null;
+		var ex = null;
 
 		if (lastExceptionStack) {
 			TraceKit.computeStackTrace.augmentStackTraceWithInitialElement(lastExceptionStack, url, lineNo, message);
 			stack = lastExceptionStack;
+			ex = lastException;
 			lastExceptionStack = null;
 			lastException = null;
 		}
@@ -120,7 +122,7 @@ TraceKit.report = (function () {
 			stack = { 'mode': 'onerror', 'message': message, 'stack': [ location ] };
 		}
 
-		notifyHandlers(stack, null);
+		notifyHandlers(stack, ex);
 
 		if (_oldOnerrorHandler) {
 			return _oldOnerrorHandler.apply(this, arguments);

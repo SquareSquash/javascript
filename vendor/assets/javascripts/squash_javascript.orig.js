@@ -217,8 +217,8 @@
           context = null;
         }
         backtraces.push({
-          url: line.url,
-          line: line.line,
+          url: line.url || "unknown",
+          line: line.line || 1,
           column: line.column,
           symbol: line.func,
           context: context,

@@ -205,6 +205,11 @@ class _SquashJavascript
       context = line.context
       context = null if context && any(context, (cline) -> cline && cline.length > 200)
       backtraces.push {url: line.url || "unknown", line: line.line || 1, column: line.column, symbol: line.func, context: context, type: 'minified'}
+    # The server doesn't allow empty backtraces. We fake one to
+    # make sure the error arrives anyway.
+    if backtraces.length == 0
+      backtraces.push {url: "fake", line: 1, symbol: "", type: 'minified'}
+
     return [ {name: "Active Thread", faulted: true, backtrace: backtraces} ]
 
   ISODateString = (d) ->

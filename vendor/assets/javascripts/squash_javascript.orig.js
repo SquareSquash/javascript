@@ -225,6 +225,14 @@
           type: 'minified'
         });
       }
+      if (backtraces.length === 0) {
+        backtraces.push({
+          url: "fake",
+          line: 1,
+          symbol: "",
+          type: 'minified'
+        });
+      }
       return [
         {
           name: "Active Thread",

@@ -85,6 +85,9 @@
         } else {
           fields.message = info.message;
         }
+        if (fields.message) {
+          fields.message = fields.message.substring(0, 1000);
+        }
         if ((_ref6 = fields.class_name) == null) {
           fields.class_name = 'Error';
         }
@@ -96,10 +99,10 @@
         if (window.location.port.length > 0) {
           fields.port = window.location.port;
         }
-        fields.path = window.location.pathname;
-        fields.query = window.location.search;
+        fields.path = window.location.pathname.substring(0, 500);
+        fields.query = window.location.search.substring(0, 255);
         if (window.location.hash !== '') {
-          fields.fragment = window.location.hash;
+          fields.fragment = window.location.hash.substring(0, 255);
         }
         fields.user_agent = navigator.userAgent;
         fields.screen_width = screen.width;

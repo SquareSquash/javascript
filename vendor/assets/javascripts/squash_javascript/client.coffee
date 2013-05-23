@@ -91,6 +91,7 @@ class _SquashJavascript
         fields.message = matches[3]
       else
         fields.message = info.message
+      fields.message = fields.message.substring(0,1000) if fields.message
       fields.class_name ?= 'Error' # when all else fails
 
       fields.backtraces = buildBacktrace(info.stack)
@@ -100,9 +101,9 @@ class _SquashJavascript
       fields.schema = window.location.protocol.replace(/:$/, '')
       fields.host = window.location.hostname
       fields.port = window.location.port if window.location.port.length > 0
-      fields.path = window.location.pathname
-      fields.query = window.location.search
-      fields.fragment = window.location.hash if window.location.hash != ''
+      fields.path = window.location.pathname.substring(0,500)
+      fields.query = window.location.search.substring(0,255)
+      fields.fragment = window.location.hash.substring(0,255) if window.location.hash != ''
 
       fields.user_agent = navigator.userAgent
 

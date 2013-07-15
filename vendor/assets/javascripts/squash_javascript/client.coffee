@@ -91,6 +91,7 @@ class _SquashJavascript
         fields.message = matches[3]
       else
         fields.message = info.message
+      fields.message = fields.message.substring(0,1000) if fields.message
       fields.class_name ?= 'Error' # when all else fails
 
       fields.backtraces = buildBacktrace(info.stack)
@@ -100,9 +101,9 @@ class _SquashJavascript
       fields.schema = window.location.protocol.replace(/:$/, '')
       fields.host = window.location.hostname
       fields.port = window.location.port if window.location.port.length > 0
-      fields.path = window.location.pathname
-      fields.query = window.location.search
-      fields.fragment = window.location.hash if window.location.hash != ''
+      fields.path = window.location.pathname.substring(0,500)
+      fields.query = window.location.search.substring(0,255)
+      fields.fragment = window.location.hash.substring(0,255) if window.location.hash != ''
 
       fields.user_agent = navigator.userAgent
 
@@ -203,7 +204,12 @@ class _SquashJavascript
     for line in stack
       context = line.context
       context = null if context && any(context, (cline) -> cline && cline.length > 200)
-      backtraces.push {url: line.url, line: line.line, column: line.column, symbol: line.func, context: context, type: 'minified'}
+      backtraces.push {url: line.url || "unknown", line: line.line || 1, column: line.column, symbol: line.func, context: context, type: 'minified'}
+    # The server doesn't allow empty backtraces. We fake one to
+    # make sure the error arrives anyway.
+    if backtraces.length == 0
+      backtraces.push {url: "fake", line: 1, symbol: "", type: 'minified'}
+
     return [ {name: "Active Thread", faulted: true, backtrace: backtraces} ]
 
   ISODateString = (d) ->

@@ -548,8 +548,8 @@ TraceKit.computeStackTrace = (function () {
 			return null;
 		}
 
-		var chrome = /^\s*at (?:new )?(.+) (?:\[as \S+\] )?\(((?:file|http):.*?):(\d+)(?::(\d+))?\)\s*$/i,
-			gecko = /^\s*(\S*)(?:\((.*?)\))?@((?:file|http).*?):(\d+)(?::(\d+))?\s*$/i,
+		var chrome = /^\s*at (?:new )?(.+) (?:\[as \S+\] )?\(((?:file|https?):.*?):(\d+)(?::(\d+))?\)\s*$/i,
+			gecko = /^\s*(\S*)(?:\((.*?)\))?@((?:file|https?).*?):(\d+)(?::(\d+))?\s*$/i,
 			lines = ex.stack.split("\n"),
 			stack = [],
 			parts,
@@ -674,8 +674,8 @@ TraceKit.computeStackTrace = (function () {
 			return null;
 		}
 
-		var lineRE1 = /^\s*Line (\d+) of linked script ((?:file|http)\S+)(?:: in function (\S+))?\s*$/i,
-			lineRE2 = /^\s*Line (\d+) of inline#(\d+) script in ((?:file|http)\S+)(?:: in function (\S+))?\s*$/i,
+		var lineRE1 = /^\s*Line (\d+) of linked script ((?:file|https?)\S+)(?:: in function (\S+))?\s*$/i,
+			lineRE2 = /^\s*Line (\d+) of inline#(\d+) script in ((?:file|https?)\S+)(?:: in function (\S+))?\s*$/i,
 			lineRE3 = /^\s*Line (\d+) of function script\s*$/i,
 			stack = [],
 			scripts = document.getElementsByTagName('script'),

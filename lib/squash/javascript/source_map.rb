@@ -97,7 +97,7 @@ class Squash::Javascript::SourceMap
     while index < mappings.length
       entry = mappings[index]
       mapping = entry if entry.route == route && entry.compiled_line == line && entry.compiled_column <= column
-      break if entry.route > route || entry.compiled_line > line
+      break if entry.route > route || (entry.route == route && entry.compiled_line > line)
       index += 1
     end
 

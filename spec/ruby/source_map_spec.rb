@@ -60,5 +60,18 @@ describe Squash::Javascript::SourceMap do
       entry = @map.resolve('vendor/assets/foo.js', 1, 0)
       expect(entry).to be_nil
     end
+
+    it "should not abort early" do
+      map = Squash::Javascript::SourceMap.new
+      map << Squash::Javascript::SourceMap::Mapping.new('http://test.host/example/url.js', 3, 140, 'app/assets/javascripts/example/url.coffee', 2, 1, 'foobar')
+      map << Squash::Javascript::SourceMap::Mapping.new('/example/path.js', 3, 140, 'app/assets/javascripts/example/path.coffee', 2, 1, 'foobar')
+      map << Squash::Javascript::SourceMap::Mapping.new('http://test2.host/example/customhost.js', 5, 20, 'app/assets/javascripts/example/customhost.coffee', 25, 1, 'bazbar')
+      map << Squash::Javascript::SourceMap::Mapping.new('/example/customhost.js', 5, 20, 'app/assets/javascripts/example/customhost-path.coffee', 25, 1, 'bazbar')
+
+      entry = map.resolve('http://test.host/example/url.js', 3, 144)
+      expect(entry.source_file).to eql('app/assets/javascripts/example/url.coffee')
+      expect(entry.source_line).to eql(2)
+      expect(entry.symbol).to eql('foobar')
+    end
   end
 end

@@ -219,7 +219,7 @@
           column: line.column,
           symbol: line.func,
           context: context,
-          type: 'minified'
+          type: 'js:hosted'
         });
       }
       return [

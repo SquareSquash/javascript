@@ -12,7 +12,4 @@ group :development do
 
   # DEVELOPMENT
   gem 'jeweler'
-
-  # SPECS
-  gem 'rspec'
 end

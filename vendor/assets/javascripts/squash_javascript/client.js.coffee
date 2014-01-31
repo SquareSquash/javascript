@@ -203,7 +203,7 @@ class _SquashJavascript
     for line in stack
       context = line.context
       context = null if context && any(context, (cline) -> cline && cline.length > 200)
-      backtraces.push {url: line.url, line: line.line, column: line.column, symbol: line.func, context: context, type: 'minified'}
+      backtraces.push {url: line.url, line: line.line, column: line.column, symbol: line.func, context: context, type: 'js:hosted'}
     return [ {name: "Active Thread", faulted: true, backtrace: backtraces} ]
 
   ISODateString = (d) ->

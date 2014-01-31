@@ -1,4 +1,4 @@
-# Copyright 2013 Square Inc.
+# Copyright 2014 Square Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -12,17 +12,17 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-# Container module for classes relating to Squash.
-
-module Squash
-
-  # Container module for classes relating to the JavaScript client library.
-
-  module Javascript
+namespace :squash do
+  namespace :sourcemaps do
+    desc "Uploads JavaScript source maps to Squash"
+    task :upload do
+      run_locally do
+        with rails_env: :production do
+          rake 'sourcemaps:upload:all'
+        end
+      end
+    end
   end
 end
 
-require 'squash/javascript/source_mapping_coffeescript_template'
-require 'squash/javascript/source_mapping_javascript_minifier'
-require 'squash/javascript/engine'
-require 'squash/javascript/railtie'
+after 'deploy:finishing', 'squash:sourcemaps:upload'

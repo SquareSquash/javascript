@@ -42,11 +42,15 @@ The library is included in this project. For Rails projects, a Sprockets include
 file is provided. For non-Rails projects, the output of `rake minify` rolls in
 the library.
 
-Unfortunately, TraceKit was causing unexpected behavior on Chrome and Firefox,
-and parts of it are commented out. (The jQuery hooks were disabled.)
+**The included version of TraceKit has been modified somewhat:**
+
+* `window.onerror` support was expanded to include changes in recent versions of
+  modern browsers (namely, passing the column and error object as parameters).
+* TraceKit was causing unexpected behavior on Chrome and Firefox, and parts of
+  it are commented out. (The jQuery hooks were disabled.)
 
 Installation
------
+------------
 
 ### Rails
 
@@ -252,19 +256,56 @@ still be re-raised, but the failsafe error will be "eaten."
 Source Mapping
 --------------
 
-If you can generate a source map for your minified JavaScript files (Clojure
+### Rails and Sprockets
+
+Squash JavaScript can integrate with Sprockets to automatically generate source
+maps for each stage of the asset compilation pipeline, then integrate with
+Capistrano to upload the source maps to Squash. To use this feature, configure
+your project like so:
+
+1. Replace your JavaScript compiler gem with Closure, if you aren't already
+   using it.
+
+   ```` diff
+   -gem 'uglifier'
+   +gem 'closure-compiler'
+   ````
+
+2. Use Squash's source-mapping Tilt engines for CoffeeScript and JavaScript.
+
+   These Tilt engines wrap existing Tilt template engines, but also generate
+   source maps to `tmp/sourcemaps`.
+
+   ```` ruby
+   Sprockets.register_engine '.coffee', Squash::Javascript::SourceMappingCoffeescriptTemplate
+   config.assets.js_compressor = Squash::Javascript::SourceMappingJavascriptMinifier
+   ````
+
+3. Add the Squash Capistrano tasks to your Capfile:
+
+    ```` ruby
+    require 'squash/javascript/capistrano`
+    ````
+
+    If you do not use Capistrano 3, you can use the `rake sourcemaps:upload:all`
+    task to upload your generated source maps to Squash.
+
+### Other Projects
+
+If you can generate a source map for your minified JavaScript files (Closure
 can), you can use this gem to upload that source map to Squash, where it will
 be used to convert minified stack traces to their original format, which can
 then benefit from Git-blaming, context, and other features of Squash.
 
 To upload the source map to squash, run the `upload_source_map` binary included
-with this gem, and pass it four arguments: 1) your API key, 2) the environment
-name, 3) the path to the JSON source map, and 4) the URL where this file will be
-hosted. Example:
+with this gem, and pass it four arguments: 1) your Squash host, 2) your API key,
+3) the environment name, and 4) the path to the JSON source map. Example:
 
 ````
-upload_source_map abc-123-abc-123-abc-123 production artifacts/mapping.json https://my.application/assets/minified.js
+upload_source_map http://your.squash.host abc-123-abc-123-abc-123 production artifacts/mapping.json
 ````
+
+Use `--help` to learn about additional options.
 
 Specs
 -----

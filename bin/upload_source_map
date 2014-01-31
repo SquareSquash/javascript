@@ -36,9 +36,15 @@ project_dir = Dir.getwd
 ignore_root = false
 revision    = nil
 options     = {}
+from        = 'hosted'
+to          = 'original'
 
 parser = OptionParser.new do |parser|
-  parser.banner = "Usage: upload_source_map [options] YOUR_SQUASH_HOST YOUR_API_KEY ENVIRONMENT /path/to/mapping.json https://url.for/minified/asset.js"
+  parser.banner = "Usage: upload_source_map [options] YOUR_SQUASH_HOST YOUR_API_KEY ENVIRONMENT /path/to/mapping.json"
+
+  parser.on('-f', '--from S', "The type of stack trace element this source map converts from (hosted [default], concatenated, etc.)") { |f| from = f }
+  parser.on('-t', '--to S', "The type of stack trace element this source map converts to (compiled, original [default], coffee, etc.)") { |t| to = t }
+
   parser.on('-o', '--open-timeout N', Integer, "HTTP connection open timeout") { |ot| options[:open_timeout] = ot }
   parser.on('-r', '--read-timeout N', Integer, "HTTP connection data received timeout") { |rt| options[:read_timeout] = rt }
   parser.on('-k', '--[no-]skip-verification', "Do not perform SSL peer verification") { |sv| options[:skip_verification] = sv }
@@ -62,14 +68,14 @@ host        = ARGV.shift
 api_key     = ARGV.shift
 environment = ARGV.shift
 map_file    = ARGV.shift
-route       = ARGV.shift
 revision    = revision || git_revision(project_dir)
 
-map = Squash::Javascript::SourceMap.from_sourcemap(map_file, route, root: ignore_root ? project_dir : nil)
 Squash::Uploader.new(host, options).transmit '/api/1.0/sourcemap.json',
                                              {
                                                  'api_key'     => api_key,
                                                  'environment' => environment,
                                                  'revision'    => revision,
-                                                 'sourcemap'   => Base64.encode64(Zlib::Deflate.deflate(map.to_yaml))
+                                                 'sourcemap'   => Base64.encode64(Zlib::Deflate.deflate(File.read(map_file))),
+                                                 'from'        => from,
+                                                 'to'          => to
                                              }

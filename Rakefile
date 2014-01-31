@@ -87,7 +87,7 @@ desc "Compile the CoffeeScript code into JavaScript"
 task :compile do
   compiler_path = File.join(File.dirname(__FILE__), 'node_modules', '.bin', 'coffee')
   output_path   = File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts')
-  input_file    = File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts', 'squash_javascript', 'client.coffee')
+  input_file    = File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts', 'squash_javascript', 'client.js.coffee')
 
   if File.exist?(compiler_path)
     system compiler_path, '-c', '-o', output_path, input_file
@@ -95,7 +95,7 @@ task :compile do
     system 'coffee', '-c', '-o', output_path, input_file
   end
 
-  FileUtils.mv File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts', 'client.js'),
+  FileUtils.mv File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts', 'client.js.js'),
                File.join(File.dirname(__FILE__), 'vendor', 'assets', 'javascripts', 'squash_javascript.orig.js')
 end
 
@@ -117,15 +117,7 @@ task minify: :compile do
 end
 
 ##################################### SPECS ####################################
-require 'rspec/core'
-require 'rspec/core/rake_task'
-
 namespace :spec do
-  desc "Run RSpec specs against the Ruby library"
-  RSpec::Core::RakeTask.new(:ruby) do |spec|
-    spec.pattern = FileList['spec/**/*_spec.rb']
-  end
-
   desc "Run Jasmine specs against SquashJavascript"
   task js: :minify do
     spec_file = File.join(File.dirname(__FILE__), 'spec', 'js', 'SpecRunner.html')

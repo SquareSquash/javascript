@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Tim Morgan"]
-  s.date = "2014-01-23"
+  s.date = "2014-02-01"
   s.description = "This client library records exceptions in front-end JavaScript code to Squash."
   s.email = "tim@squareup.com"
   s.executables = ["upload_source_map"]
@@ -25,10 +25,12 @@ Gem::Specification.new do |s|
     "bin/upload_source_map",
     "lib/squash/javascript.rb",
     "lib/squash/javascript/engine.rb",
-    "lib/squash/javascript/source_map.rb",
+    "lib/squash/javascript/source_mapping_coffeescript_template.rb",
+    "lib/squash/javascript/source_mapping_javascript_minifier.rb",
+    "lib/squash/javascript/tasks.rake",
     "vendor/assets/javascripts/squash_javascript.min.js",
     "vendor/assets/javascripts/squash_javascript.orig.js",
-    "vendor/assets/javascripts/squash_javascript/client.coffee",
+    "vendor/assets/javascripts/squash_javascript/client.js.coffee",
     "vendor/assets/javascripts/squash_javascript/index.js",
     "vendor/assets/javascripts/squash_javascript/tracekit.js"
   ]
@@ -47,7 +49,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<yard>, [">= 0"])
       s.add_development_dependency(%q<redcarpet>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, [">= 0"])
     else
       s.add_dependency(%q<railties>, [">= 3.1"])
       s.add_dependency(%q<json>, [">= 0"])
@@ -55,7 +56,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<yard>, [">= 0"])
       s.add_dependency(%q<redcarpet>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<rspec>, [">= 0"])
     end
   else
     s.add_dependency(%q<railties>, [">= 3.1"])
@@ -64,7 +64,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<yard>, [">= 0"])
     s.add_dependency(%q<redcarpet>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<rspec>, [">= 0"])
   end
 end
 

@@ -284,7 +284,7 @@ your project like so:
 3. Add the Squash Capistrano tasks to your Capfile:
 
     ```` ruby
-    require 'squash/javascript/capistrano`
+    require 'squash/javascript/capistrano'
     ````
 
     If you do not use Capistrano 3, you can use the `rake sourcemaps:upload:all`

@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'railties', '>= 3.1'
 gem 'json'
 gem 'squash_uploader', require: nil
-gem 'sourcemap'
+gem 'sourcemap', require: 'source_map'
 
 group :development do
   # DOCS

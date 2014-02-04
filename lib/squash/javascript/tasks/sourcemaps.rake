@@ -1,4 +1,5 @@
 require 'squash/uploader'
+require 'source_map'
 
 # @private
 class Sprockets::Asset

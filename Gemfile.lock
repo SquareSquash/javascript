@@ -69,6 +69,7 @@ GEM
     rdoc (4.1.1)
       json (~> 1.4)
     redcarpet (3.0.0)
+    sourcemap (0.0.2)
     squash_uploader (1.0.1)
       json
     thor (0.18.1)
@@ -85,5 +86,6 @@ DEPENDENCIES
   json
   railties (>= 3.1)
   redcarpet
+  sourcemap
   squash_uploader
   yard

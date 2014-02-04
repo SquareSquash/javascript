@@ -1,4 +1,5 @@
 require 'source_map'
+require 'sprockets'
 
 # @private
 class Sprockets::Asset

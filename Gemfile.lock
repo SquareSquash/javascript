@@ -31,6 +31,7 @@ GEM
       oauth2
     hashie (2.0.5)
     highline (1.6.20)
+    hike (1.2.3)
     i18n (0.6.9)
     jeweler (2.0.0)
       builder
@@ -70,11 +71,17 @@ GEM
       json (~> 1.4)
     redcarpet (3.0.0)
     sourcemap (0.0.2)
+    sprockets (2.10.1)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
     squash_uploader (1.0.1)
       json
     thor (0.18.1)
     thread_safe (0.1.3)
       atomic
+    tilt (1.4.1)
     tzinfo (0.3.38)
     yard (0.8.7.3)
 
@@ -87,5 +94,6 @@ DEPENDENCIES
   railties (>= 3.1)
   redcarpet
   sourcemap
+  sprockets
   squash_uploader
   yard

@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "lib/squash/javascript.rb",
     "lib/squash/javascript/capistrano.rb",
     "lib/squash/javascript/engine.rb",
+    "lib/squash/javascript/patches.rb",
     "lib/squash/javascript/railtie.rb",
     "lib/squash/javascript/source_mapping_coffeescript_template.rb",
     "lib/squash/javascript/source_mapping_javascript_minifier.rb",
@@ -47,6 +48,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<railties>, [">= 3.1"])
+      s.add_runtime_dependency(%q<sprockets>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<squash_uploader>, [">= 0"])
       s.add_runtime_dependency(%q<sourcemap>, [">= 0"])
@@ -55,6 +57,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
       s.add_dependency(%q<railties>, [">= 3.1"])
+      s.add_dependency(%q<sprockets>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<squash_uploader>, [">= 0"])
       s.add_dependency(%q<sourcemap>, [">= 0"])
@@ -64,6 +67,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<railties>, [">= 3.1"])
+    s.add_dependency(%q<sprockets>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<squash_uploader>, [">= 0"])
     s.add_dependency(%q<sourcemap>, [">= 0"])

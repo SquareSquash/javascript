@@ -15,17 +15,17 @@ class Sprockets::Asset
 
     mappings = Array.new
     to_s.lines.each_with_index do |_, index|
-      offset = GemSourceMap::Offset.new(index, 0)
-      mappings << GemSourceMap::Mapping.new(relative_path, offset, offset)
+      offset = SourceMap::Offset.new(index, 0)
+      mappings << SourceMap::Mapping.new(relative_path, offset, offset)
     end
-    GemSourceMap::Map.new(mappings, resource_path)
+    SourceMap::Map.new(mappings, resource_path)
   end
 end
 
 # @private
 class Sprockets::BundledAsset < Sprockets::Asset
   def sourcemap
-    to_a.inject(GemSourceMap::Map.new) do |map, asset|
+    to_a.inject(SourceMap::Map.new) do |map, asset|
       map + asset.sourcemap
     end
   end

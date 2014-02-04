@@ -22,6 +22,7 @@ module Squash
   end
 end
 
+require 'squash/javascript/patches'
 require 'squash/javascript/source_mapping_coffeescript_template'
 require 'squash/javascript/source_mapping_javascript_minifier'
 require 'squash/javascript/engine'

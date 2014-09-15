@@ -85,6 +85,14 @@ include it using a `<script>` tag:
 The file defines a `SquashJavascript` singleton which is accessible using
 `SquashJavascript.instance()`.
 
+### Configuring CORS
+
+In order for applications to report their JavaScript errors to Squash, your
+Squash instance must be configured to accept cross-origin requests from your
+other website. In your Squash web code, update the `allowed_origins`
+configuration (under `config/environments/[environment]/dogfood.yml`) to include
+the host serving your application.
+
 Usage
 -----
 

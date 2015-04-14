@@ -7,7 +7,7 @@ namespace :sourcemaps do
     task minified: :environment do
       manifest_path = Rails.root.join('public',
                                       Rails.application.config.assets.prefix.sub(/^\//, ''),
-                                      'manifest-*.json')
+                                      '.sprockets-manifest-*.json')
       manifest_path = Dir.glob(manifest_path.to_s).first
       raise "You must precompile your static assets before running this task." unless manifest_path
 

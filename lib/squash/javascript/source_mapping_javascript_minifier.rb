@@ -27,7 +27,7 @@ class Squash::Javascript::SourceMappingJavascriptMinifier < Tilt::Template
   private
 
   def digest(io)
-    Rails.application.assets.digest.update(io).hexdigest
+    Rails.application.assets.pack_hexdigest(Rails.application.assets.digest(io))
   end
 
   def source_map_path(digest)

@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Tim Morgan"]
-  s.date = "2015-04-14"
+  s.date = "2015-05-15"
   s.description = "This client library records exceptions in front-end JavaScript code to Squash."
   s.email = "tim@squareup.com"
   s.executables = ["upload_source_map"]

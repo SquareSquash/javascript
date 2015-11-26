@@ -4,6 +4,13 @@ require 'sprockets'
 # @private
 class Sprockets::Asset
   def sourcemap
+    if included
+      return included.inject(SourceMap::Map.new) do |map, path|
+        asset = @environment.load(path)
+        map + asset.sourcemap
+      end
+    end
+
     relative_path = if pathname.to_s.include?(Rails.root.to_s)
                       pathname.relative_path_from(Rails.root)
                     else
@@ -20,14 +27,5 @@ class Sprockets::Asset
       mappings << SourceMap::Mapping.new(relative_path, offset, offset)
     end
     SourceMap::Map.new(mappings, resource_path)
-  end
-end
-
-# @private
-class Sprockets::BundledAsset < Sprockets::Asset
-  def sourcemap
-    to_a.inject(SourceMap::Map.new) do |map, asset|
-      map + asset.sourcemap
-    end
   end
 end

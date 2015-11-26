@@ -34,7 +34,7 @@ namespace :sourcemaps do
       Rails.application.assets.each_logical_path(Rails.application.config.assets.precompile) do |path|
         next unless path.end_with?('.js')
         asset = Rails.application.assets.find_asset(path)
-        next unless asset.kind_of?(Sprockets::BundledAsset)
+        next unless asset.included
         map = asset.sourcemap
         Squash::Uploader.new(Squash::Ruby.configuration(:api_host),
                              skip_verification: Squash::Ruby.configuration(:skip_verification)

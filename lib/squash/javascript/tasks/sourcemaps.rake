@@ -45,7 +45,7 @@ namespace :sourcemaps do
                        'revision'    => Squash::Ruby.current_revision,
                        'sourcemap'   => Base64.encode64(Zlib::Deflate.deflate(map.as_json.to_json)),
                        'from'        => 'concatenated',
-                       'to'          => 'compiled',
+                       'to'          => 'compiled'
                    }
       end
     end

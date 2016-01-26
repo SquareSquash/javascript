@@ -27,10 +27,12 @@ class Squash::Javascript::SourceMappingJavascriptMinifier < Tilt::Template
   private
 
   def digest(io)
-    Rails.application.assets.pack_hexdigest(Rails.application.assets.digest(io))
+    _squash_env.pack_hexdigest(_squash_env.digest(io))
   end
 
   def source_map_path(digest)
     Rails.root.join 'tmp', 'sourcemaps', 'minified', "#{digest}.json"
   end
+
+  def _squash_env() @env ||= Sprockets::Railtie.build_environment(Rails.application) end
 end

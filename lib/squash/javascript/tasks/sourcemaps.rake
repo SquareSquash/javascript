@@ -31,9 +31,10 @@ namespace :sourcemaps do
     end
 
     task concatenated: :environment do
-      Rails.application.assets.each_logical_path(Rails.application.config.assets.precompile) do |path|
+      env = Sprockets::Railtie.build_environment(Rails.application)
+      env.each_logical_path(Rails.application.config.assets.precompile) do |path|
         next unless path.end_with?('.js')
-        asset = Rails.application.assets.find_asset(path)
+        asset = env.find_asset(path)
         next unless asset.included
         map = asset.sourcemap
         Squash::Uploader.new(Squash::Ruby.configuration(:api_host),

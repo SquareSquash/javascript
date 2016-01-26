@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'railties', '>= 3.1'
-gem 'sprockets', '>= 3.0'
+gem 'sprockets-rails', '>= 3.0'
+gem 'coffee-rails'
 gem 'json'
 gem 'squash_uploader', require: nil
 gem 'sourcemap', require: 'source_map'

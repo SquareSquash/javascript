@@ -1,4 +1,4 @@
-Squash Client Library: JavaScript
+Client Library: JavaScript 
 =================================
 
 This client library reports front-end JavaScript exceptions to Squash, the
@@ -62,7 +62,7 @@ JavaScript into your application.js file (or other JavaScript manifest):
 //= require squash_javascript
 ````
 
-### Other projects
+### Other projects of javascript
 
 For other projects, you may need to compile the CoffeeScript file first. If you
 do not have the `coffee` binary installed in your path, you can download and

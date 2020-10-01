@@ -1,3 +1,5 @@
+this project is awesome
+=======================
 Squash Client Library: JavaScript
 =================================
 
